@@ -6,14 +6,6 @@ metadata:
   region: ap-south-1
   version: "1.31"
 
-managedNodeGroups:
-  - name: ng-main
-    instanceType: t3.medium
-    desiredCapacity: 2
-    minSize: 2
-    maxSize: 3
-    volumeSize: 20
-
 iam:
   withOIDC: true
 
@@ -21,3 +13,11 @@ addons:
   - name: aws-ebs-csi-driver
     wellKnownPolicies:
       ebsCSIController: true
+
+managedNodeGroups:
+  - name: ng-main
+    instanceType: t3.medium
+    desiredCapacity: 2
+    minSize: 2
+    maxSize: 3
+    volumeSize: 20
