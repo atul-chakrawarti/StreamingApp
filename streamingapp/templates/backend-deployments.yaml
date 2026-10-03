@@ -1,0 +1,69 @@
+{{- range $name, $svc := .Values.services }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $name }}
+  labels:
+    app: {{ $name }}
+spec:
+  replicas: {{ $svc.replicas }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: {{ $name }}
+  template:
+    metadata:
+      labels:
+        app: {{ $name }}
+    spec:
+      containers:
+        - name: {{ $name }}
+          image: "{{ $.Values.global.registry }}/{{ $svc.image }}:{{ $svc.tag }}"
+          ports:
+            - containerPort: {{ $svc.port }}
+          env:
+            - name: PORT
+              value: {{ $svc.port | quote }}
+          envFrom:
+            - configMapRef:
+                name: streamingapp-config
+            - secretRef:
+                name: streamingapp-secret
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          {{- if eq $svc.probe.type "http" }}
+          readinessProbe:
+            httpGet:
+              path: {{ $svc.probe.path }}
+              port: {{ $svc.port }}
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: {{ $svc.probe.path }}
+              port: {{ $svc.port }}
+            initialDelaySeconds: 20
+            periodSeconds: 20
+          {{- else }}
+          readinessProbe:
+            tcpSocket:
+              port: {{ $svc.port }}
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: {{ $svc.port }}
+            initialDelaySeconds: 20
+            periodSeconds: 20
+          {{- end }}
+{{- end }}

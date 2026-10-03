@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: streamingapp-config
+data:
+  MONGO_URI: {{ include "streamingapp.mongoUri" . | quote }}
+  CLIENT_URLS: {{ .Values.global.clientUrls | quote }}
+  AWS_REGION: {{ .Values.global.awsRegion | quote }}

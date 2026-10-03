@@ -13,3 +13,11 @@ managedNodeGroups:
     minSize: 2
     maxSize: 3
     volumeSize: 20
+
+iam:
+  withOIDC: true
+
+addons:
+  - name: aws-ebs-csi-driver
+    wellKnownPolicies:
+      ebsCSIController: true

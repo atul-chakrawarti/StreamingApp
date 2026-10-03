@@ -26,6 +26,7 @@ pipeline {
           docker build -t $ECR/streamingapp-streaming:$TAG -f backend/streamingService/Dockerfile backend
           docker build -t $ECR/streamingapp-admin:$TAG -f backend/adminService/Dockerfile backend
           docker build -t $ECR/streamingapp-chat:$TAG -f backend/chatService/Dockerfile backend
+          docker build -t $ECR/streamingapp-frontend:$TAG frontend
         '''
       }
     }
