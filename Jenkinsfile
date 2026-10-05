@@ -1,5 +1,6 @@
 pipeline {
   agent any
+  options { disableConcurrentBuilds() }
 
   environment {
     AWS_REGION = 'ap-south-1'
