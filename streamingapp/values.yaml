@@ -32,7 +32,7 @@ services:
 
 frontend:
   image: streamingapp-frontend
-  tag: "5"
+  tag: "12"
   replicas: 2
   port: 80
 
