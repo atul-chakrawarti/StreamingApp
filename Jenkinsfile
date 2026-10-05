@@ -34,7 +34,7 @@ pipeline {
     stage('Push Images') {
       steps {
         sh '''
-          for s in auth streaming admin chat; do
+          for s in auth streaming admin chat frontend; do
             docker push $ECR/streamingapp-$s:$TAG
           done
         '''
